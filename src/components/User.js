@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { userLogin, isLoggedIn } from '../ducks/reducer';
 
 
 export default class User extends Component {
@@ -20,7 +21,7 @@ render() {
         <div>
             <h1>User</h1>
             <button onClick={this.login}>sign in</button>
-            <h2></h2>
+            {console.log(this.props)}
         </div>
     )
 }

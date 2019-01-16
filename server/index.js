@@ -33,6 +33,11 @@ app.get('/api/user-data', (req, res) => {
     res.json({ user: req.session.user });
 });
 
+const path = require('path')
+app.get('*', (req, res)=>{
+  res.sendFile(path.join(__dirname, '../build/index.html'));
+})
+
 const PORT = 3560;
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`)
