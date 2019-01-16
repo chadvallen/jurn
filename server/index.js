@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const massive = require('massive');
 const session = require('express-session');
 require('dotenv').config();
+const UC = require('./user_controller');
 
 const app = express();
 app.use(bodyParser.json());
@@ -20,6 +21,17 @@ massive(process.env.CONNECTION_STRING).then(db => {
     console.error('error on massive', error)
 })
 
+app.get('/auth/callback', UC.login);
+
+app.post('/api/logout', (req, res) => {
+    req.session.destroy();
+    res.send();
+});
+
+app.get('/api/user-data', (req, res) => {
+    console.log('req.session--->', req.session)
+    res.json({ user: req.session.user });
+});
 
 const PORT = 3560;
 app.listen(PORT, () => {
