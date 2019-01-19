@@ -57,5 +57,9 @@ module.exports = {
             console.log('--->', error);
             res.status(500).json({message: 'There was an unexpected error on the server'})
         })
+    },
+    logout: (req, res) => {
+        req.session.destory();
+        res.send();
     }
 }
