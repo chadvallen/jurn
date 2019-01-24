@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { userLogin, isLoggedIn } from '../ducks/reducer';
+import { userLogin, isLoggedIn, hasUsername } from '../ducks/reducer';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,8 @@ class User extends Component {
     constructor(){
         super();
         this.state = {
-            name: ''
+            name: '',
+            username: 'default'
         }
     }
 
@@ -26,18 +27,42 @@ class User extends Component {
         });
     }
 
+    createNewUsername = () => {
+        let username = this.state.username;
+        let id = this.props.user.user.id;
+        console.log(id, username)
+
+        axios.post('/api/user-data', {id, username}).then(response => {
+            console.log(response.data)
+
+        }).catch(error => {
+            console.error(error)
+        })
+    }
+
     render() {
-        const { user, loggedIn } = this.props;
+        const { user, loggedIn, username } = this.props;
+        
         return (
             <div>
                 <button onClick={this.login}>sign in</button>
                 { loggedIn ?
                 <div>
+                    
+                    {console.log(username)}
+                {/* {
+                    (user.user.username === null) ? 
+                    <h1>Get a username</h1>
+                    :
+                    hasUsername(user.user.username)
+                } */}
+                
                 {console.log(user.user)}
                 <h2>{user.user.profile_name}</h2>
                 <img src={user.user.picture} />
                 <Link to={`/dashboard/${user.user.username}`} ><button>Dashboard</button></Link>
                 <button onClick={this.logout}>sign out</button>
+                <button onClick={this.createNewUsername}>new username</button>
                 </div>
                 :
                 <h1>Please sign in.</h1>
@@ -48,11 +73,12 @@ class User extends Component {
 }
 
 function mapStateToProps(state){
-    const { user, loggedIn } = state
+    const { user, loggedIn, username } = state
     return {
         user,
-        loggedIn
+        loggedIn,
+        username
     }
 }
 
-export default connect(mapStateToProps, {userLogin, isLoggedIn})(User);
+export default connect(mapStateToProps, {userLogin, isLoggedIn, hasUsername})(User);

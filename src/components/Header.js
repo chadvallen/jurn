@@ -17,12 +17,27 @@ class Header extends Component {
         })
     }
 
+    login = () => {
+        const redirectUri = encodeURIComponent(window.location.origin + '/auth/callback');
+        const url = `https://${process.env.REACT_APP_AUTH0_DOMAIN}/authorize?client_id=${process.env.REACT_APP_AUTH0_CLIENT_ID}&scope=openid%20profile%20email&redirect_uri=${redirectUri}&response_type=code`
+        window.location = url;
+    }
+
+
     render() {
+        const {loggedIn} = this.props;
         return (
             <div className="header">
                 <Link to='/'><img src={logo} alt="logo" className="logo" /></Link>
                 <nav>
+                    {loggedIn ?
+                    <div>
                     <Link to='/user'>Profile</Link>
+                    {console.log(this.props.loggedIn)}
+                    </div>
+                    : 
+                    <button onClick={this.login}>sign in</button>
+                    }
                 </nav>
             </div>
         )

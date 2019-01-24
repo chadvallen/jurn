@@ -9,7 +9,6 @@ module.exports = {
             grant_type: 'authorization_code',
             redirect_uri: `http://${req.headers.host}/auth/callback`
         };
-        console.log('payload', payload)
     
         function tradeCodeForAccessToken() {
             return axios.post(`https://${process.env.REACT_APP_AUTH0_DOMAIN}/oauth/token`, payload);
@@ -37,7 +36,7 @@ module.exports = {
                 ]).then(newUsers => {
                 const newUser = newUsers[0];
                 req.session.user = newUser;
-                console.log('newUser--->', newUser)
+                // console.log('newUser--->', newUser)
                 res.redirect('/user');
                 }).catch(error => {
                 console.log('error inserting user into database', error);

@@ -30,9 +30,18 @@ app.post('/api/logout', (req, res) => {
     res.send();
 });
 app.get('/api/user-data', (req, res) => {
-    console.log('req.session--->', req.session)
+    // console.log('req.session--->', req.session)
     res.json({ user: req.session.user });
 });
+app.post('/api/user-data', (req, res) => {
+    const db = req.app.get('db');
+    const { id, username } = req.body;
+    db.create_username(id, username).then(username => {
+        res.status(200).json(username)
+    }).catch(error => {
+        console.error('error on create_username', error)
+    })
+})
 
 app.get('/api/posts/:username', PC.getPostsPrivate);
 app.post('/api/posts', PC.createPost);

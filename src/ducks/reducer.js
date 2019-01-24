@@ -1,10 +1,12 @@
 const INITIAL_STATE = {
     user: null,
-    loggedIn: false
+    loggedIn: false,
+    hasUsername: false
 };
 
 const USER_LOGIN = 'USER_LOGIN';
 const UPDATE_LOGGED_IN = 'UPDATE_LOGGED_IN';
+const UPDATE_USERNAME = 'UPDATE_USERNAME';
 
 export function userLogin(user) {
     return {
@@ -20,6 +22,13 @@ export function isLoggedIn(loggedIn) {
     }
 }
 
+export function hasUsername(username) {
+    return {
+        type: UPDATE_USERNAME,
+        payload: username
+    }
+}
+
 
 function reducer(state=INITIAL_STATE, action) {
     switch(action.type) {
@@ -27,6 +36,8 @@ function reducer(state=INITIAL_STATE, action) {
             return {...state, user: action.payload};
         case UPDATE_LOGGED_IN:
             return {...state, loggedIn: action.payload};
+        case UPDATE_USERNAME:
+            return {...state, username: action.payload};
         default:
             return state;
     }
